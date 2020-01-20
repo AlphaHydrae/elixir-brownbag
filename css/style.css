@@ -65,8 +65,16 @@ h4 {
   font-size: 16px;
 }
 
+h5 {
+  font-size: 14px;
+}
+
 .lead {
   font-size: 20px;
+}
+
+h5.lead {
+  font-size: 18px;
 }
 
 a {
@@ -381,6 +389,10 @@ textarea.input {
 
 .home-content h4 {
   color: #FFF;
+}
+
+.home-content h5 {
+  color: #fff;
 }
 
 #page-wrapper {
