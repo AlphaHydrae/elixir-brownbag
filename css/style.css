@@ -75,6 +75,16 @@ h5 {
 
 h5.lead {
   font-size: 18px;
+  margin-bottom: 15px;
+}
+
+h5.lead a {
+  color: #b3ccff;
+  font-weight: normal;
+}
+
+h5.lead a:hover {
+  color: #fcb6c5;
 }
 
 a {
