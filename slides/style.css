@@ -1,6 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700);
 @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
 @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+@import url(https://fonts.googleapis.com/css?family=Uncial+Antiqua&display=swap);
 
 body {
   font-family: 'Droid Serif';
@@ -9,6 +10,9 @@ h1, h2, h3 {
   font-family: 'Yanone Kaffeesatz';
   font-weight: 400;
   margin-bottom: 0;
+}
+.remark-slide-content {
+  font-size: 25px;
 }
 .remark-slide-content h1 { font-size: 3em; }
 .remark-slide-content h2 { font-size: 2em; }
@@ -121,8 +125,24 @@ code {
   margin-top: 1em;
 }
 
+.sources {
+  font-size: 0.6em;
+}
+
+.speaker .sources ul {
+  list-style-type: none;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.speaker .sources ul li {
+  margin-top: 0.4em;
+}
+
 .speaker img {
-  width: 100%;
+  width: 95%;
 }
 
 .center {
@@ -138,6 +158,12 @@ code {
 
 .muted {
   color: #777777;
+}
+
+.remark-slide-content.hidden-header h1:first-child,
+.remark-slide-content.hidden-header h2:first-child,
+.remark-slide-content.hidden-header h3:first-child {
+  display: none;
 }
 
 .smaller {
@@ -159,4 +185,16 @@ code {
 .lang-makeup img {
   margin-top: 0.4em;
   width: 100%;
+}
+
+.ancient {
+  font-family: 'Uncial Antiqua', 'Yanone Kaffeesatz';
+}
+
+pre:first-child {
+  margin-top: 0;
+}
+
+pre:last-child {
+  margin-bottom: 0;
 }
