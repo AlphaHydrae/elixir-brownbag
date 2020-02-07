@@ -1,0 +1,5 @@
+source $HOME/.screenrc
+
+screen -t slides 0
+stuff "live-server --browser='Google Chrome' --open=/slides .\012"
+screen -t shell 1
