@@ -5,10 +5,11 @@ class: center, middle, inverse
 ### Have some delicious buzzwords
 
 dynamic multi-paradigm programming language, declarative functional programming,
-immutable data structures, massive scalability, soft real-time systems, high
-availability, maintainability, hot code swapping, low latency, share-nothing
-message passing concurrency, preemptive scheduling, distribution, fault
-tolerance, remote debugging, parallelized automated tests, doctests
+immutable data structures, meta programming with compile-time LISP-style macros,
+open ad-hoc polymorphism with protocols, massive scalability, soft real-time
+systems, high availability, maintainability, hot code swapping, low latency,
+share-nothing message passing concurrency, preemptive scheduling, distribution,
+fault tolerance, remote debugging, parallelized automated tests, doctests
 
 ---
 
@@ -39,7 +40,8 @@ class: center, hidden-header
 ![José Valim](../img/speaker02b.jpg)
 
 .sources[
-The [Elixir](https://elixir-lang.org) community
+* [Idioms for Building Distributed Fault-Tolerant Applications with Elixir • Curry On Barcelona 2017](https://youtu.be/MMfYXEH9KsY)
+* The [Elixir](https://elixir-lang.org) community
 ]
 ]
 
@@ -109,6 +111,8 @@ class: center, middle
 
 ## Why make Elixir?
 
+TODO: compatibility, extensibility, productivity
+
 Productivity
 .muted[vs.]
 Performance
@@ -119,7 +123,8 @@ Why not have **both**?
 
 Started studying Erlang after trying to make Ruby on Rails thread-safe.
 
-Productivity vs. performance example: Ruby vs. Java.
+Productivity vs. performance example: Ruby vs. Java. Ruby makes you happy. Java
+is performant.
 
 It's a false dychotomy.
 
@@ -130,19 +135,15 @@ class: center-headers, middle
 .half-column[
 ## Erlang
 
-.center.muted.smaller[1986]
+.center.muted.smaller[1986, open sourced in 1998]
 .center.muted.smaller[[Prolog](https://en.wikipedia.org/wiki/Prolog)-like syntax]
 
 ```erlang
--module(fibonacci).
--export([fib/1]).
+-module(hello).
+-export([hello_world/0]).
 
-fib(0) ->
-  0;
-fib(1) ->
-  1;
-fib(N) when N >= 2 ->
-  fib(N - 1) + fib(N - 2).
+hello_world() ->
+  io:fwrite("Hello world!\n").
 ```
 ]
 
@@ -153,13 +154,9 @@ fib(N) when N >= 2 ->
 .center.muted.smaller[[Ruby](https://www.ruby-lang.org)-like syntax]
 
 ```elixir
-defmodule Fibonacci do
-  def fib(0), do: 0
-
-  def fib(1), do: 1
-
-  def fib(n) when n >= 2 do
-    fib(n - 1) + fib(n - 2)
+defmodule Hello do
+  def hello_world() do
+    IO.puts "Hello World!"
   end
 end
 ```
@@ -315,6 +312,8 @@ String.upcase(first_part)  # "ELIXIR"
 ```
 ]
 
+TODO: lodash FP chain example
+
 --
 
 <br class='clear' />
@@ -333,6 +332,11 @@ String.upcase(first_part)  # "ELIXIR"
 ---
 
 ### Pattern matching
+
+a = 1
+1 = a
+[1] = [1]
+[a] = [1]
 
 .half-column[
 ```elixir
@@ -469,10 +473,14 @@ The third language is Node.js.
 
 TODO: meta programming example
 
+Macros inspired by LISP
+
 Show if and + implementation to demonstrate macros and syntactic sugar
 Elixir implemented in Elixir
 AST written in elixir terms, quote/unquote
 Kernel specialforms
+
+Ecto inspired from link (language integrated query) in .net, but doesn’t have to be integrated into language, just a compile time macro: compiled as close as possible to SQL so no waste at runtime
 
 ---
 
@@ -481,9 +489,11 @@ Kernel specialforms
 TODO: toolset image
 
 * Build tool
+  * Live compilation
 * Automated test framework
   * Parallel tests
 * Package manager
+  * Hex: package manager for elixir, also became package manager for Erlang
 * Great documentation
   * Documentation generator
   * Fun help in shell
@@ -519,6 +529,10 @@ Call Erlang libraries with **no runtime cost**.
 
 ---
 
+Compatibility: discord rust example
+
+---
+
 ## The power of the BEAM
 
 Elixir runs on the BEAM virtual machine.
@@ -526,13 +540,18 @@ Elixir runs on the BEAM virtual machine.
 Takes full advantage of the Erlang concurrency model and 30+ years of libraries
 and experience running large scale systems.
 
-WhatsApp, CouchDB, Riak, Rabbit MQ
-
 ---
 
 class: center, middle, inverse
 
 # The Erlang Concurrency Model
+
+???
+
+As presented by Joe Armstrong.
+
+Erlang must be doing something right if it's being used by WhatsApp, CouchDB,
+Riak, Rabbit MQ, Discord, Heroku.
 
 ---
 
@@ -551,6 +570,7 @@ Ericsson had large computer networks before the internet (20-30 years), Erlang d
   * Have to write a parallel program
   * Massively parallel problems are extremely common: www, phone networks
   * We want to make it easy to write parallel programs: we can’t. Too complicated.
+    * Parallel programming hard because have to think about how threads are going to interfere with sequential code
   * Relatively easy to write a concurrent program
 * Goals
   * Concurrency
@@ -570,12 +590,13 @@ Ericsson had large computer networks before the internet (20-30 years), Erlang d
   * Isolated processes communicate through message passing
     * Messaging decouples, OOP Alan Kay
       * Big idea of OO was the messaging, not the organization of objects and methods, also big idea in Unix pipes, decoupling source and destination
+  * TODO: elixir process diagram
   * 3 concurrency primitives: spawn, send, receive (single instruction when compiled)
     * Erlang & Elixir primitives side by side (https://elixir-lang.org/getting-started/processes.html)
     * Concurrent programming should be at the lowest level possible in the programming language
     * Erlang system is very operating-system-like
   * No shared memory, mutex, locks, etc. Pure message passing.
-  * Immutability: everything is copied, no pointer, you either get the message or you don't
+  * Immutability: everything is copied, no pointer/reference, you either get the message or you don't
     * Not religious FP: ETS tables, don't change the entire universe every time you change something in it
   * Each process: separate heap, separate stack, separately garbage collected, no shared anything
   * Failure semantics the same as in the real world: you send a message, it either gets there or it doesn't, and you'll never know
@@ -594,20 +615,25 @@ Ericsson had large computer networks before the internet (20-30 years), Erlang d
   * Scheduling multi cores is NP hard
   * Process sand, barrels to fill
   * Schedulers
+  * Show observer
 
 * Fault tolerance
   * Stuff fails, shit happens
   * Impossible with one computer (cacti)
   * Shared memory: write differently for single core or multiple machines
   * Need one programming model for local and distributed programming
+    * TODO: elixir distribution process diagram
   * Isolation
     * Copying is inefficient but required for fault tolerance
   * More computers increases reliability as long as they are independent
   * Like to write correct programs but impossible to write correct big programs, must handle errors, evolve and run forever, like biological systems
   * Von Neumann: treat computer systems as biological systems: failure is an inherent part of its operation, we have to detect it and recover from it
   * Defensive programming: check args all the time. In a sequential program you lose everything if it crashes. In Erlang you can have as many processes as you want
+    * Defensive programming is a consequence of a bad concurrency model
   * Different failure model: instead of one very fast delivery car, many little taxis, you don’t care if a few fail
   * Let it crash
+    * Fail fast
+    * Did you try turning it on and off again
   * Do not be lenient with input, programs should crash when going off spec
   * Monitor and restart
   * Software faults are soft - the Bohrbug/Heisenbug hypothesis
@@ -622,6 +648,7 @@ Ericsson had large computer networks before the internet (20-30 years), Erlang d
 * Erlang fits multicore
   * Fault tolerance implies isolation implies possible parallelism implies scalability
   * Message passing between isolated processes scales nicely
+    * Concurrency is a special case of distribution where all processes are on the same machine
   * It just went faster
     * Tandem computers also noticed FT scales quite well
   * Goal in Erlang is that a program with a reasonable balance of processes scales automatically on multi cores (0.75)
@@ -657,6 +684,8 @@ AXD301 Asynchronous Transfer Mode (ATM) Telephone Switch (1998)
 <img src='../img/axd301.png' width='40%'>
 
 Over 1,000,000 lines of Erlang. Reported to achieve nine "9"s availability.
+
+TODO: telephone switch diagram
 
 ---
 
@@ -764,6 +793,7 @@ class: middle
 
 .sources[
 * [Which Companies are Using Erlang and why? • Erlang Solutions](https://www.erlang-solutions.com/blog/which-companies-are-using-erlang-and-why-mytopdogstatus.html)
+* [Stuff Goes Bad • Fred Herbert • Heroku 2014](https://blog.heroku.com/erlang-in-anger)
 * [Convenience Over Correctness • Steve Vinoski • IEEE](http://steve.vinoski.net/pdf/IEEE-Convenience_Over_Correctness.pdf)
 * [Using Rust to Scale Elixir for 11 Million Concurrent Users • Matt Nowack • Discord](https://blog.discordapp.com/using-rust-to-scale-elixir-for-11-million-concurrent-users-c6f19fc029d3)
 * [Robust compute for RDF queries • Managing fault tolerance in Elixir with supervision trees • Tonny Hammond](https://medium.com/@tonyhammond/robust-compute-for-rdf-queries-eb2ad665ef12)
@@ -777,6 +807,7 @@ class: middle
 **Main Inspiration**
 
 .sources[
+* [Idioms for Building Distributed Fault-Tolerant Applications with Elixir • José Valim • Curry On Barcelona 2017](https://youtu.be/MMfYXEH9KsY)
 * [The Soul of Erlang and Elixir • Saša Jurić • GOTO 2019](https://youtu.be/JvBT4XBdoUE)
 * [How we program multicores • Joe Armstrong • SICS Software Week 2016](https://youtu.be/bo5WL5IQAd0)
 * [Faults, Scaling, and Erlang Concurrency • Stanford Seminar 2014](https://youtu.be/YaUPdgtUYko)
@@ -811,7 +842,6 @@ class: middle
 * [The ABCs of OTP • Jesse J. Anderson • EEF17 Conference](https://youtu.be/4SCwubzqsVU)
 * [What every Node.js developer needs to know about Elixir • Bryan Hunter • NDC Conferences 2016](https://youtu.be/q8wueg2hswA)
 * [Keynote: Phoenix 1.3 • Chris McCord • Lonestar ElixirConf 2017](https://youtu.be/tMO28ar0lW8)
-* [Idioms for building distributed fault-tolerant applications with Elixir • José Valim • Curry On Barcelona 2017](https://youtu.be/MMfYXEH9KsY)
 * [Elixir Umbrella — Microservices or Majestic Monolith? • Georgina McFadyen • Elixir.LDN 2017](https://youtu.be/jhZwQ1LTdUI)
 * [Perhap: Applying Domain Driven Design and Reactive Architectures to Functional Programming • Rob Martin • ElixirConf 2017](https://youtu.be/kq4qTk18N-c)
 ]
