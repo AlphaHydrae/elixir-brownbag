@@ -1,12 +1,29 @@
 # Demo 2
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
+- [Initial Setup](#initial-setup)
+- [Setup](#setup)
+- [Introduction](#introduction)
+- [Part 1](#part-1)
+- [Part 2](#part-2)
+- [Part 3](#part-3)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 ## Initial Setup
+
+> Perform once on new cluster.
 
 ```bash
 ansible-playbook -D -vv -i inventory.yml playbook.yml
 ```
 
 ## Setup
+
+> Perform before demo.
 
 * `screen -c .screenrc`
 * Wipe database and restart services
