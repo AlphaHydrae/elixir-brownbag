@@ -16,6 +16,7 @@
 
 ## Nice-to-have
 
+* https://elixir-lang.org/getting-started/typespecs-and-behaviours.html
 * Elixir
   * Different operator for concatenation, different operators for binary/bitstrings
 * Check Wikipedia article about Erlang/Elixir/OTP

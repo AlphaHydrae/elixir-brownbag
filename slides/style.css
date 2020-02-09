@@ -191,10 +191,15 @@ code {
   font-family: 'Uncial Antiqua', 'Yanone Kaffeesatz';
 }
 
-pre:first-child {
-  margin-top: 0;
+.elixir-goals ul li {
+  margin-top: 1em;
+  font-size: 1.4em;
 }
 
-pre:last-child {
-  margin-bottom: 0;
+.toolset {
+  margin-top: 1em;
+}
+.toolset td, .toolset th {
+  padding-top: 0.4em;
+  padding-right: 1em;
 }

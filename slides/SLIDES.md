@@ -74,62 +74,6 @@ class: center, middle, inverse
 
 ---
 
-class: center, middle
-
-.half-column[
-![2012](../img/2012.jpg)
-]
-
-.half-column[
-## Origins
-
-[Plataformatec](https://plataformatec.com/en/), a software consultancy founded in São Paulo, Brazil
-
-R&D project led by José Valim, former member of the [Ruby on Rails](https://rubyonrails.org) core team
-
-Elixir core team now an [independent open source organization](http://blog.plataformatec.com.br/2020/01/important-information-about-our-elixir-and-ruby-open-source-projects/)
-
-<img src="../img/elixir-orig.png" width=40% />
-]
-
-???
-
-Plataformatec [active in the Ruby community](https://plataformatec.com/en/why-us/ruby/):
-
-* [Devise](https://github.com/heartcombo/devise)
-* [Simple Form](https://github.com/heartcombo/simple_form)
-
-Also contribute to the Elixir community:
-
-* [Elixir](https://elixir-lang.org)
-* [Ecto](https://hexdocs.pm/ecto/Ecto.html)
-* [Phoenix](http://www.phoenixframework.org)
-
----
-
-class: center, middle
-
-## Why make Elixir?
-
-TODO: compatibility, extensibility, productivity
-
-Productivity
-.muted[vs.]
-Performance
-
-Why not have **both**?
-
-???
-
-Started studying Erlang after trying to make Ruby on Rails thread-safe.
-
-Productivity vs. performance example: Ruby vs. Java. Ruby makes you happy. Java
-is performant.
-
-It's a false dychotomy.
-
----
-
 class: center-headers, middle
 
 .half-column[
@@ -169,6 +113,66 @@ end
 
   .muted.smaller[Like these: [Alpaca](https://github.com/alpaca-lang/alpaca), [Gleam](https://gleam.run), [LFE](http://lfe.io)]
 ]
+
+---
+
+class: center, middle
+
+.half-column[
+![2012](../img/2012.jpg)
+]
+
+.half-column[
+## Origins
+
+[Plataformatec](https://plataformatec.com/en/), a software consultancy founded in São Paulo, Brazil
+
+R&D project led by José Valim, former member of the [Ruby on Rails](https://rubyonrails.org) core team
+
+Elixir core team now an [independent open source organization](http://blog.plataformatec.com.br/2020/01/important-information-about-our-elixir-and-ruby-open-source-projects/)
+
+<img src="../img/elixir-orig.png" width=40% />
+]
+
+???
+
+Plataformatec [active in the Ruby community](https://plataformatec.com/en/why-us/ruby/):
+
+* [Devise](https://github.com/heartcombo/devise)
+* [Simple Form](https://github.com/heartcombo/simple_form)
+
+Also contribute to the Elixir community:
+
+* [Elixir](https://elixir-lang.org)
+* [Ecto](https://hexdocs.pm/ecto/Ecto.html)
+* [Phoenix](http://www.phoenixframework.org)
+
+---
+
+class: center, middle
+
+## The Goals of Elixir
+
+.elixir-goals[
+* Productivity
+* Extensibility
+* Compatibility
+]
+
+---
+
+class: center, middle
+
+<img src='../img/red-pill-blue-pill.jpg' width='70%' />
+
+???
+
+Started studying Erlang after trying to make Ruby on Rails thread-safe.
+
+Productivity vs. performance example: Ruby vs. Java. Ruby makes you happy. Java
+is performant.
+
+It's a false dychotomy.
 
 ---
 
@@ -293,6 +297,7 @@ String.upcase(List.first(String.split(fact, " ")))  # "ELIXIR"
 
 .half-column[
 ```elixir
+fact = "Elixir Rocks"
 String.upcase(
   List.first(
     String.split(
@@ -306,13 +311,12 @@ String.upcase(
 
 .half-column[
 ```elixir
+fact = "Elixir Rocks"
 fact_parts = String.split(fact, " ")
 first_part = List.first(fact_parts)
 String.upcase(first_part)  # "ELIXIR"
 ```
 ]
-
-TODO: lodash FP chain example
 
 --
 
@@ -333,17 +337,39 @@ TODO: lodash FP chain example
 
 ### Pattern matching
 
-a = 1
-1 = a
-[1] = [1]
-[a] = [1]
+```elixir
+iex> a = 1
+1
+
+iex> 1 = a
+1
+
+iex> [1] = [1]
+[1]
+```
+
+```elixir
+iex> [a, b, [c]] = [1, 2, [3]]
+[1, 2, [3]]
+
+iex> c
+3
+```
+
+---
+
+### Pattern matching in functions
 
 .half-column[
 ```elixir
 defmodule Fibonacci do
-  def fib(0), do: 0
+  def fib(0) do
+    0
+  end
 
-  def fib(1), do: 1
+  def fib(1) do
+    1
+  end
 
   def fib(n) when n >= 2 do
     fib(n - 1) + fib(n - 2)
@@ -383,27 +409,6 @@ iex> fib -1
 
 ---
 
-### A practical example
-
-```js
-function authMiddleware(req, res, next) {
-
-  const authorizationHeader = req.get('Authorization');
-  if (!authorizationHeader) {
-    throw new Error('Authorization header is missing');
-  }
-
-  const match = authorizationHeader.match(/^Bearer (.+)$/);
-  if (!match) {
-    throw new Error('Authorization header is malformed');
-  }
-
-  return match[1];
-}
-```
-
----
-
 ### Doing it with Phoenix
 
 ```elixir
@@ -434,18 +439,9 @@ defmodule MyApp.MyController do
 end
 ```
 
----
+???
 
-* Pattern matching
-  * Case
-  * https://github.com/tc39/proposal-pattern-matching
-  * Guards
-
----
-
-## Typespecs and behaviors
-
-https://elixir-lang.org/getting-started/typespecs-and-behaviours.html
+https://github.com/tc39/proposal-pattern-matching
 
 ---
 
@@ -469,76 +465,171 @@ The third language is Node.js.
 
 ---
 
-### Meta programming example
+### The Elixir Abstract Syntax Tree (AST) is in Elixir!
 
-TODO: meta programming example
+```elixir
+iex> ast = quote do: 1 + 2
+{:+, [context: Elixir, import: Kernel], [1, 2]}
 
-Macros inspired by LISP
-
-Show if and + implementation to demonstrate macros and syntactic sugar
-Elixir implemented in Elixir
-AST written in elixir terms, quote/unquote
-Kernel specialforms
-
-Ecto inspired from link (language integrated query) in .net, but doesn’t have to be integrated into language, just a compile time macro: compiled as close as possible to SQL so no waste at runtime
+iex> Macro.to_string(ast)
+"1 + 2"
+```
 
 ---
 
+### What do I care?
+
+```js
+const { assert } = require('chai');
+
+assert(1 == 2, 'damn, this is useless');
+
+// AssertionError: damn, this is useless
+//   value: false
+```
+
+---
+
+### Unlimited Macro Power
+
+```elixir
+defmodule MyMacros do
+  defmacro nice_assert({:==, _meta, [left, right]}) do
+    quote do
+      IO.puts """
+
+      Left: #{unquote(left)}
+      Right: #{unquote(right)}
+
+      Match: #{unquote(left == right)}
+      """
+    end
+  end
+end
+```
+
+```elixir
+iex> require MyMacros
+iex> MyMacros.nice_assert 1 == 2
+
+Left: 1
+Right: 2
+
+Match: false
+```
+
+???
+
+Macros inspired by LISP.
+
+[Kernel specialforms](https://hexdocs.pm/elixir/Kernel.SpecialForms.html#content)
+
+---
+
+### Macros Everywhere
+
+This looks like some fundamental syntax of the language...
+
+```elixir
+if condition do
+  do_this()
+else
+  do_that()
+end
+```
+
+--
+
+Actually, it's a macro:
+
+```elixir
+if(condition, do: do_this(), else: do_that())
+```
+
+So are these: `def`, `defmodule`, `|>`.
+
+---
+
+### Domain Specific Languages Through Macros
+
+*Ecto: a toolkit for data mapping and language integrated query.*
+
+```elixir
+  from p in Post,
+where: p.published_at < now and
+       p.author == "José",
+order: p.created_at
+```
+
+https://github.com/elixir-ecto/ecto
+
+???
+
+Ecto inspired from link (language integrated query) in .net, but it doesn’t have to be integrated into language.
+
+It's just a compile-time macro, compiled as close as possible to SQL so there is no waste at runtime.
+
+---
+
+class: center, middle
+
 ## Modern programming language
 
-TODO: toolset image
+<img src='../img/what-if-i-told-you.jpg' width='50%' />
 
-* Build tool
-  * Live compilation
-* Automated test framework
-  * Parallel tests
-* Package manager
-  * Hex: package manager for elixir, also became package manager for Erlang
-* Great documentation
-  * Documentation generator
-  * Fun help in shell
-* Code formatter
-* Production releases
-* Introspectable runtime
-  * Observer
+---
 
-TODO: what if I told you?
+### Your toolset
+
+.toolset[
+Tool                                                                                          | How do I install it? | w00t
+:-------------------------------------------------------------------------------------------- | :------------------- | :---------------
+Build Tool ([Mix](https://hexdocs.pm/mix/Mix.html))                                           | You don't have to    | Live compilation
+Package Manager ([Hex](https://hex.pm/))                                                      | You don't have to    | Also for Erlang
+Test Framework ([ExUnit](https://hexdocs.pm/ex_unit/ExUnit.html))                             | You don't have to    | Parallel tests
+Documentation Generator ([ExDoc](https://hexdocs.pm/ex_doc/readme.html))                      | You don't have to    | Using Markdown
+Code Formatter ([Elixir Formatter](https://hexdocs.pm/mix/master/Mix.Tasks.Format.html))      | You don't have to    |
+Production Release Bundler                                                                    | You don't have to    |
+Debugging Tools ([Observer](https://elixir-lang.org/getting-started/debugging.html#observer)) | You don't have to    |
+]
 
 ---
 
 ## Fully compatible with Erlang
 
-Elixir compiler: Elixir -> Elixir AST -> Erlang AST -> Erlang compiler
-
-Modules are atoms in both Erlang and Elixir:
+Modules are identified by atoms in both Erlang and Elixir:
 
 ```elixir
 iex> Enum == :'Elixir.Enum'
 true
+
 iex> Enum.empty?([])
 true
+
 iex> :'Elixir.Enum'.empty?([])
 true
+
 iex> :rand.uniform()
 0.8175669086010815
+
 iex> Base.encode16(:crypto.hash(:sha256, "Elixir"))
 "3315715A7A3AD57428298676C5AE465DADA38D951BDFAC9348A8A31E9C7401CB"
 ```
 
 Call Erlang libraries with **no runtime cost**.
 
----
+???
 
-Compatibility: discord rust example
+Elixir compiler: Elixir -> Elixir AST -> Erlang AST -> Erlang compiler
 
 ---
 
 ## The power of the BEAM
 
-Elixir runs on the BEAM virtual machine.
+Elixir runs on the BEAM virtual machine, taking full advantage of:
 
-Takes full advantage of the Erlang concurrency model and 30+ years of libraries
-and experience running large scale systems.
+* Hundreds of Erlang libraries.
+* 30+ years of experience running large scale systems.
 
 ---
 
@@ -644,6 +735,7 @@ Ericsson had large computer networks before the internet (20-30 years), Erlang d
   * Links, must detect failure, works whether local or distributed
   * Failure: let somebody else fix the problem, same model for separate processes or machines (heart attack, unknown state)
   * Supervisors
+    * Who supervises the supervisor?
 
 * Erlang fits multicore
   * Fault tolerance implies isolation implies possible parallelism implies scalability
@@ -797,6 +889,7 @@ class: middle
 * [Convenience Over Correctness • Steve Vinoski • IEEE](http://steve.vinoski.net/pdf/IEEE-Convenience_Over_Correctness.pdf)
 * [Using Rust to Scale Elixir for 11 Million Concurrent Users • Matt Nowack • Discord](https://blog.discordapp.com/using-rust-to-scale-elixir-for-11-million-concurrent-users-c6f19fc029d3)
 * [Robust compute for RDF queries • Managing fault tolerance in Elixir with supervision trees • Tonny Hammond](https://medium.com/@tonyhammond/robust-compute-for-rdf-queries-eb2ad665ef12)
+* [Understanding Elixir Macros • Jorge Chávez - Hackernoon](https://hackernoon.com/understanding-elixir-macros-3464e141434c)
 * [Understanding Elixir Macros • Saša Jurić](https://www.theerlangelist.com/article/macros_1)
 ]
 
@@ -868,7 +961,7 @@ class: center, middle, inverse
 
 ---
 
-## Elixir 101 - Strings... but are they really?
+### Elixir 101 - Strings... but are they really?
 
 There are actually no strings in Elixir, just binaries:
 
@@ -895,3 +988,9 @@ iex> <<102 :: size(8), 111 :: size(8), 111 :: size(8)>>
 iex> <<2::size(2), 3 :: size(3)>>  # 10011
 <<19::size(5)>>
 ```
+
+---
+
+### Native Implemented Functions (NIFs)
+
+[Using Rust to Scale Elixir for 11 Million Concurrent Users](https://blog.discordapp.com/using-rust-to-scale-elixir-for-11-million-concurrent-users-c6f19fc029d3)
