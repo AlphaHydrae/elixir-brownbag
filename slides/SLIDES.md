@@ -777,6 +777,14 @@ class: center, middle
 
 ---
 
+class: center, middle, inverse
+
+.erlang-goals.large[
+Concurrency
+]
+
+---
+
 class: center, middle
 
 <img src='../img/concurrency-vs-parallelism.jpg' width='50%' />
@@ -1119,6 +1127,14 @@ Show observer.
 
 ---
 
+class: center, middle, inverse
+
+.erlang-goals.large[
+Fault Tolerance
+]
+
+---
+
 class: center, middle
 
 <img src='../img/fault-tolerance-word-cloud.jpg' width='60%' />
@@ -1170,7 +1186,7 @@ class: center, middle
 * Single- or multi-core: use shared memory.
 * Distributed computation: use message passing.
 
-You have to use two different programming models.
+Two different programming models depending on the scale of the system.
 
 ---
 
