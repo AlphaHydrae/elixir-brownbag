@@ -45,6 +45,7 @@ mix test
   ```
 * Open http://localhost:4000 with developer console showing network & WebSocket activity.
 * Open http://localhost:4000/load.
+* Open project in editor.
 * Open 3 terminals:
   * Tail log:
 
