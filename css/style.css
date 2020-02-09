@@ -1110,3 +1110,10 @@ textarea.input {
     width: 100%;
   }
 }
+
+#github-ribbon img {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 10000;
+}

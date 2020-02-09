@@ -1606,6 +1606,12 @@ class: center, middle
 
 ---
 
+class: center, inverse, middle
+
+## [heig.ch/elixirBB](https://heig.ch/elixirBB)
+
+---
+
 class: center, middle, inverse
 
 ## Backup
