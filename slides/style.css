@@ -170,6 +170,11 @@ code {
   font-size: 0.9em;
 }
 
+.copyright {
+  color: #c0c0c0;
+  font-size: 0.5em;
+}
+
 .half-column {
   float: left;
   width: 48%;
@@ -187,13 +192,37 @@ code {
   width: 100%;
 }
 
-.ancient {
+.erlang-goals {
   font-family: 'Uncial Antiqua', 'Yanone Kaffeesatz';
+  font-size: 2em;
+}
+
+.erlang-goals.large {
+  font-size: 3em;
+}
+
+.erlang-goals ul li {
+  margin-top: 0.4em;
 }
 
 .elixir-goals ul li {
   margin-top: 1em;
   font-size: 1.4em;
+}
+
+.erlang-process {
+  display: block;
+  margin: 0 auto;
+  height: 6em;
+  width: 6em;
+  line-height: 6em;
+
+  -moz-border-radius: 6em; /* or 50% */
+  border-radius: 6em; /* or 50% */
+
+  background-color: black;
+  color: white;
+  text-align: center;
 }
 
 .toolset {
@@ -202,4 +231,37 @@ code {
 .toolset td, .toolset th {
   padding-top: 0.4em;
   padding-right: 1em;
+}
+
+.software-fault-types {
+  margin-top: 1em;
+  width: 100%;
+  border-collapse: collapse;
+}
+.software-fault-types tr:first-child th, .software-fault-types tr:first-child td {
+  border-top: 0;
+}
+.software-fault-types th:first-child, .software-fault-types td:first-child {
+  border-left: 0;
+}
+.software-fault-types th, .software-fault-types td {
+  width: 33.3%;
+  text-align: left;
+  border: 1px solid #c0c0c0;
+  padding: 0.4em;
+}
+.software-fault-types .highlight {
+  color: #008b00;
+}
+
+.supervision-strategies {
+  margin-top: 1em;
+}
+.supervision-strategies p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.remark-notes {
+  font-size: 2em;
 }

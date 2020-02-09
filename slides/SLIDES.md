@@ -169,8 +169,7 @@ class: center, middle
 
 Started studying Erlang after trying to make Ruby on Rails thread-safe.
 
-Productivity vs. performance example: Ruby vs. Java. Ruby makes you happy. Java
-is performant.
+Trade-off: Ruby makes you happy. Java is performant.
 
 It's a false dychotomy.
 
@@ -206,7 +205,7 @@ iex> false === :false  # true
 
 ---
 
-## Elixir 101 - First-class Functions
+## Elixir 101 - Modules & first-class functions
 
 **Modules**
 
@@ -239,13 +238,13 @@ iex> add.(1, 2)
 
 .half-column[
 ```elixir
-hello = fn -> IO.puts "Hello World" end
+hello = fn name -> IO.puts "Hello #{name}" end
 ```
 ]
 
 .half-column[
 ```elixir
-iex> hello.()  # "Hello World"
+iex> hello.("World")  # "Hello World"
 :ok
 ```
 ]
@@ -254,7 +253,7 @@ iex> hello.()  # "Hello World"
 
 ???
 
-* Module not a class but a collection of functions.
+* Module not a class but a collection of functions (a namespace).
 * No objects, no instantiation, no `this`.
 * (Processes later.)
 
@@ -552,7 +551,7 @@ So are these: `def`, `defmodule`, `|>`.
 
 ### Domain Specific Languages Through Macros
 
-*Ecto: a toolkit for data mapping and language integrated query.*
+*[Ecto](https://github.com/elixir-ecto/ecto): a toolkit for data mapping and language integrated query.*
 
 ```elixir
   from p in Post,
@@ -560,8 +559,6 @@ where: p.published_at < now and
        p.author == "José",
 order: p.created_at
 ```
-
-https://github.com/elixir-ecto/ecto
 
 ???
 
@@ -582,15 +579,19 @@ class: center, middle
 ### Your toolset
 
 .toolset[
-Tool                                                                                          | How do I install it? | w00t
-:-------------------------------------------------------------------------------------------- | :------------------- | :---------------
-Build Tool ([Mix](https://hexdocs.pm/mix/Mix.html))                                           | You don't have to    | Live compilation
-Package Manager ([Hex](https://hex.pm/))                                                      | You don't have to    | Also for Erlang
-Test Framework ([ExUnit](https://hexdocs.pm/ex_unit/ExUnit.html))                             | You don't have to    | Parallel tests
-Documentation Generator ([ExDoc](https://hexdocs.pm/ex_doc/readme.html))                      | You don't have to    | Using Markdown
-Code Formatter ([Elixir Formatter](https://hexdocs.pm/mix/master/Mix.Tasks.Format.html))      | You don't have to    |
-Production Release Bundler                                                                    | You don't have to    |
-Debugging Tools ([Observer](https://elixir-lang.org/getting-started/debugging.html#observer)) | You don't have to    |
+Tool                                                                                          | Installation   | w00t
+:-------------------------------------------------------------------------------------------- | :------------- | :------------------------
+Build Tool ([Mix](https://hexdocs.pm/mix/Mix.html))                                           | Out of the box | Live compilation
+Package Manager ([Hex](https://hex.pm/))                                                      | Out of the box | Also for Erlang
+Test Framework ([ExUnit](https://hexdocs.pm/ex_unit/ExUnit.html))                             | Out of the box | Coverage & parallel tests
+Documentation Generator ([ExDoc](https://hexdocs.pm/ex_doc/readme.html))                      | Out of the box | Using Markdown
+Code Formatter ([Elixir Formatter](https://hexdocs.pm/mix/master/Mix.Tasks.Format.html))      | Out of the box | Used in all official code
+Production Release Bundler                                                                    | Out of the box | Unix & Windows
+Debugging Tools ([Observer](https://elixir-lang.org/getting-started/debugging.html#observer)) | Out of the box | And more...
+]
+
+.center[
+<img src='../img/swiss-army-knife.jpg' width='20%' />
 ]
 
 ---
@@ -620,11 +621,13 @@ Call Erlang libraries with **no runtime cost**.
 
 ???
 
-Elixir compiler: Elixir -> Elixir AST -> Erlang AST -> Erlang compiler
+The Elixir compiler compiles the Elixir AST to Erlang AST, then gives it to the Erlang compiler.
 
 ---
 
 ## The power of the BEAM
+
+<img src='../img/beam.jpg' width='80%' />
 
 Elixir runs on the BEAM virtual machine, taking full advantage of:
 
@@ -637,147 +640,27 @@ class: center, middle, inverse
 
 # The Erlang Concurrency Model
 
-???
-
-As presented by Joe Armstrong.
-
-Erlang must be doing something right if it's being used by WhatsApp, CouchDB,
-Riak, Rabbit MQ, Discord, Heroku.
-
 ---
 
 class: center, middle
 
-<img src='../img/ericsson.png' width='50%' />
+## Massively parallel problems
+
+Global phone network, World Wide Web
+
+WhatsApp, CouchDB, Riak, Rabbit MQ, Discord, Heroku
+
+<img src='../img/erlang-the-movie.png' width='35%' />
+
+.copyright[© Learn You Some Erlang for Great Good]
 
 ???
 
-Ericsson had large computer networks before the internet (20-30 years), Erlang designed for big worldwide infrastructure
+Massively parallel problems are extremely common.
 
----
+The way Erlang is used at least proves the model works.
 
-* Multicore
-  * Why doesn't my program run N times faster on an N core computer?
-  * Have to write a parallel program
-  * Massively parallel problems are extremely common: www, phone networks
-  * We want to make it easy to write parallel programs: we can’t. Too complicated.
-    * Parallel programming hard because have to think about how threads are going to interfere with sequential code
-  * Relatively easy to write a concurrent program
-* Goals
-  * Concurrency
-  * Fault tolerance
-* Concurrency
-  * Concurrency vs. parallelism
-  * True parallelism impossible on single core (hyperthreading, superscalar processor)
-* Problems with shared memory
-  * Handled by the operating system, not the programming language
-  * Programming parallel programs in languages that have the wrong primitives, and semantically different, makes it difficult
-  * Extremely difficult to get right and to understand
-  * Simultaneity violates the laws of physics
-* Message passing
-  * Erlang/Elixir is a simple dynamic functional language, purely sequential, easy to understand
-  * Process
-    * Very lightweight compared to OS process (130 mio process limit, Smallest OS of process: ~64kb, Erlang process 309 words (233 for the heap): http://erlang.org/doc/efficiency_guide/processes.html)
-  * Isolated processes communicate through message passing
-    * Messaging decouples, OOP Alan Kay
-      * Big idea of OO was the messaging, not the organization of objects and methods, also big idea in Unix pipes, decoupling source and destination
-  * TODO: elixir process diagram
-  * 3 concurrency primitives: spawn, send, receive (single instruction when compiled)
-    * Erlang & Elixir primitives side by side (https://elixir-lang.org/getting-started/processes.html)
-    * Concurrent programming should be at the lowest level possible in the programming language
-    * Erlang system is very operating-system-like
-  * No shared memory, mutex, locks, etc. Pure message passing.
-  * Immutability: everything is copied, no pointer/reference, you either get the message or you don't
-    * Not religious FP: ETS tables, don't change the entire universe every time you change something in it
-  * Each process: separate heap, separate stack, separately garbage collected, no shared anything
-  * Failure semantics the same as in the real world: you send a message, it either gets there or it doesn't, and you'll never know
-* Easier to understand
-  * Single site where things happen
-  * Erlang processes obey the laws of physics:
-    * No simultaneity: a single place consumes a single stream of events
-    * Messages travel at or under the speed of light, if A and B separated in space and B depends on A, A must send message to B before B can do anything, simultaneity is impossible
-    * We only know how things were, not how they are
-  * Million users: million processes, the concurrency of the system is reflected in the architecture
-  * Process granularity defined by observing the world (e.g. phone conversation)
-  * Actor model, physics modeling (Hewitt)
-  * Classic web server shared memory vs. Erlang isolated processes
-    * Apache php has to spawn os processes, cannot do more than 10k
-* Automate parallelization (experts)
-  * Scheduling multi cores is NP hard
-  * Process sand, barrels to fill
-  * Schedulers
-  * Show observer
-
-* Fault tolerance
-  * Stuff fails, shit happens
-  * Impossible with one computer (cacti)
-  * Shared memory: write differently for single core or multiple machines
-  * Need one programming model for local and distributed programming
-    * TODO: elixir distribution process diagram
-  * Isolation
-    * Copying is inefficient but required for fault tolerance
-  * More computers increases reliability as long as they are independent
-  * Like to write correct programs but impossible to write correct big programs, must handle errors, evolve and run forever, like biological systems
-  * Von Neumann: treat computer systems as biological systems: failure is an inherent part of its operation, we have to detect it and recover from it
-  * Defensive programming: check args all the time. In a sequential program you lose everything if it crashes. In Erlang you can have as many processes as you want
-    * Defensive programming is a consequence of a bad concurrency model
-  * Different failure model: instead of one very fast delivery car, many little taxis, you don’t care if a few fail
-  * Let it crash
-    * Fail fast
-    * Did you try turning it on and off again
-  * Do not be lenient with input, programs should crash when going off spec
-  * Monitor and restart
-  * Software faults are soft - the Bohrbug/Heisenbug hypothesis
-    * “If the program state is reinitialised and the failed operation retried, the operation will usually not fail the second time.”
-  * Errors: complexity, reproducibility, frequency? (diagram)
-* OTP
-  * OTP is like Unix for C: large set of libraries for the language Erlang
-  * Links, must detect failure, works whether local or distributed
-  * Failure: let somebody else fix the problem, same model for separate processes or machines (heart attack, unknown state)
-  * Supervisors
-    * Who supervises the supervisor?
-
-* Erlang fits multicore
-  * Fault tolerance implies isolation implies possible parallelism implies scalability
-  * Message passing between isolated processes scales nicely
-    * Concurrency is a special case of distribution where all processes are on the same machine
-  * It just went faster
-    * Tandem computers also noticed FT scales quite well
-  * Goal in Erlang is that a program with a reasonable balance of processes scales automatically on multi cores (0.75)
-
-* Erlang: very lightweight processes, very fast message passing, total separation between processes, automatic marshalling/demarshalling, fast sequential code, strict functional code, dynamic typing, transparent distribution, compose sequential and concurrent code
-
----
-
-Images:
-
-* cacti-fault-tolerance
-* concurrency-vs-parallelism
-* concurrency
-* parallelism
-* erlang-the-movie
-* let-it-crash
-* links
-* message-passing-mailbox
-* message-passing
-* otp-common
-* otp
-* supervision-tree
-* supervisor-one-for-all
-* supervisor-one-for-one
-* supervisor-rest-for-one
-
----
-
-class: center, middle
-
-AXD301 Asynchronous Transfer Mode (ATM) Telephone Switch (1998)
-
-<img src='../img/axd301.png' width='40%'>
-
-Over 1,000,000 lines of Erlang. Reported to achieve nine "9"s availability.
-
-TODO: telephone switch diagram
+Joe Armstrong's vision.
 
 ---
 
@@ -797,17 +680,190 @@ class: center, middle, hidden-header
 
 ---
 
-## Shared memory concurrency
+class: center, middle
 
-* Threads
-* Extremely difficult to get right
-* Simultaneity violates the laws of physics
+## Parallel programs
+
+<img src='../img/you-mean-threads.jpg' width='40%' />
+
+???
+
+Extremely difficult to get right.
 
 ---
 
-## Fault tolerance
+class: center
 
-* Impossible on one computer
+## Concurrent (and parallel?) programming
+
+.half-column[
+### Shared memory
+
+C, C++, Python, Perl, Ruby, PHP, Java, JavaScript, Smalltalk, Objective-C, C#,
+Swift, Fortran, Pascal, ML, Oberon, Ada, BCPL, Basic, F#, Lua, Lis, Prolog,
+Miranda, Haskell, Go, Simula
+]
+
+.half-column[
+### Message passing
+
+Erlang, Elixir, Pony
+]
+
+---
+
+class: center
+
+## Concurrent (and parallel?) programming
+
+.half-column[
+### Shared memory
+
+C, C++, Python, Perl, Ruby, PHP, Java, JavaScript, Smalltalk, Objective-C, C#,
+Swift, Fortran, Pascal, ML, Oberon, Ada, BCPL, Basic, F#, Lua, Lis, Prolog,
+Miranda, Haskell, Go, Simula
+
+<img src='../img/evil.jpg' width='40%' />
+]
+
+.half-column[
+### Message passing
+
+Erlang, Elixir, Pony
+
+<img src='../img/doubleplusgood.jpg' width='70%' />
+]
+
+---
+
+class: center, middle
+
+<img src='../img/ericsson.png' width='50%' />
+
+???
+
+Ericsson had large computer networks before the internet (20-30 years).
+
+Erlang was designed by Joe Armstrong, Robert Virding & Mike Williams for big worldwide infrastructure.
+
+---
+
+class: center, middle
+
+AXD301 Asynchronous Transfer Mode (ATM) Telephone Switch (1998)
+
+<img src='../img/axd301.png' width='40%'>
+
+Over 1,000,000 lines of Erlang. The mythical nine "9"s of availability.
+
+---
+
+class: center, middle
+
+<img src='../img/switch-diagram.jpg' width='60%' />
+
+.copyright[© Idioms for Building Distributed Fault-Tolerant Applications with Elixir • José Valim • Curry On Barcelona 2017]
+
+---
+
+class: center, middle
+
+## The Goals of Erlang (1986)
+
+.erlang-goals.large[
+* Concurrency
+* Fault Tolerance
+]
+
+---
+
+class: center, middle
+
+<img src='../img/concurrency-vs-parallelism.jpg' width='50%' />
+
+.copyright[© luminousmen.com]
+
+---
+
+class: center, middle
+
+.half-column[
+### Concurrency
+
+<img src='../img/concurrency.jpg' width='80%' />
+]
+
+.half-column[
+### Parallelism
+
+<img src='../img/parallelism.jpg' width='80%' />
+]
+
+.clear[
+.copyright[© luminousmen.com]
+]
+
+???
+
+True parallelism impossible on single core (hyperthreading, superscalar processor).
+
+---
+
+class: center, middle
+
+.half-column[
+* *"We want to make it easy to write parallel programs. We can't."*
+
+.muted.smaller[Joe Armstrong]
+]
+
+.half-column[
+* *"But we can make it relatively easy to write a concurrent program."*
+
+.muted.smaller[Joe Armstrong]
+]
+
+???
+
+Parallel programming hard because have to think about how threads are going to interfere with sequential code.
+
+---
+
+## Problems with languages using shared memory concurrency
+
+* **Concurrency is handled by the operating system**, not the programming language.
+
+* Sequential language have the **wrong primitives** for parallel programming.
+
+* Simultaneity (shared memory access) **violates the laws of physics**.
+
+---
+
+class: center
+
+## Physicists...
+
+.half-column[
+<img src='../img/joe-armstrong-young.jpg' width='70%' />
+
+*"Please don't violate the laws of physics."*
+
+.muted[Joe Armstrong]
+]
+
+.half-column[
+<img src='../img/albert-einstein.jpg' width='70%' />
+
+*"He might be on to something."*
+
+.muted[Some physicist]
+]
+
+???
+
+There is no such thing as simultaneity in physics.
+
+*"Erlang also violates the laws of physics, but it violates far fewer of them."*
 
 ---
 
@@ -823,24 +879,342 @@ class: center, middle
 
 ???
 
-Message passing: care about correctness not efficiency. Efficiency comes from parallelism
+Erlang was designed caring about correctness, not efficiency.
+
+Efficiency comes from parallelism
 
 ---
 
-## Fault tolerance
+class: center, middle
 
-* How to program large real-time systems better?
-* Main concerns: fault tolerance & high availability
-* Impossible with one computer (cacti)
-* Do not violate the laws of physics
+## Erlang
+
+.erlang-process[
+Process
+]
+
+Lightweight. **Not** an OS process.
+
+Simple dynamic functional language.
+
+Purely sequential, easy to understand.
+
+???
+
+Very lightweight compared to OS process:
+
+* Smallest OS process: ~64kB.
+* Erlang process [309 words](http://erlang.org/doc/efficiency_guide/processes.html), including 233 for the heap (~2.4kB for 64 bit architecture).
+
+
+
+Beam VM can run a maximum of about 130 million processes (source?).
 
 ---
 
-## Concepts
+class: center, middle
 
-* Background jobs
-* Promises (Task)
-* Observables (GenStage)
+## Message passing
+
+<img src='../img/message-passing.png' width='40%' />
+
+.copyright[© Learn You Some Erlang for Great Good]
+
+---
+
+## 3 concurrency primitives
+
+Spawn, send, receive.
+
+.half-column[
+```erlang
+% Create a parallel process to evaluate F.
+Pid = spawn(F)
+
+% Send a message to F.
+Pid ! M
+
+% Wait for messages matching patterns
+% to arrive in the mailbox.
+receive
+  Pattern1 -> Actions1;
+  Pattern2 -> Actions2;
+after
+  1000 -> Actions
+end.
+```
+]
+
+.half-column[
+```elixir
+# Create a parallel process to evaluate f.
+pid = spawn(f)
+
+# Send a message to f.
+send(pid, msg)
+
+# Wait for messages matching patterns
+# to arrive in the mailbox.
+receive do
+  pattern1 -> actions1
+  pattern2 -> actions2
+after
+  1_000 -> actions
+end
+```
+]
+
+???
+
+Concurrent programming should be at the lowest level possible in the programming language.
+
+Spawn, send and receive are language primitives compiled to single BEAM instructions.
+
+---
+
+.half-column[
+## No
+
+* Shared memory
+* Pointers
+* Semaphores
+* Mutexes
+* Monitors
+* Spin locks
+* Critical regions
+* Futures
+* Promises
+* Locks
+* Caches
+* Threads
+* Thread safety
+]
+
+.half-column[
+## Just
+
+* Pure message passing
+
+.muted.smaller[*Yeah, right...*]
+]
+
+???
+
+Does not mean there are no synchronization problems or race conditions, but the goal is to make it easier to understand.
+
+---
+
+class: center, middle
+
+## Isolated processes
+
+Each with their own stack & heap and separately garbage-collected.
+
+No pointer/reference: everything is copied and immutable.
+
+<img src='../img/isolated-processes.png' width='40%' />
+
+.copyright[© Idioms for Building Distributed Fault-Tolerant Applications with Elixir • José Valim • Curry On Barcelona 2017]
+
+???
+
+Isolated processes communicate through message passing.
+
+Not religious FP immutability: ETS tables don't change the entire universe every time you change something in it.
+
+---
+
+class: center, middle
+
+## Obey the laws of physics!
+
+### Causality
+
+* Messages travel at or under the speed of light.
+
+* We only know how things were, not how they are.
+
+* Simultaneity is impossible!
+
+### Real-world failure semantics
+
+* You either get the message or you don't, and you'll never know.
+
+???
+
+Messages travel at the speed of light. If A and B are separated in space and B
+depends on the state of A, A must send a message to B before B can do anything.
+
+---
+
+class: center, middle
+
+## Actor model
+
+<img src='../img/actor-model.png' width='50%' />
+
+Code is based on **observation**.
+
+.copyright[© How we program multicores • Joe Armstrong • SICS Software Week 2016]
+
+???
+
+[History of the Actor Model](https://en.wikipedia.org/wiki/History_of_the_Actor_model)
+
+.smaller[
+* Single site where things happen: each process is a single place consuming a
+  single stream of events.
+* Process granularity is defined by observing the world (e.g. phone
+  conversation).
+* A million users: a million processes. The concurrency of the system is
+  reflected in the architecture.
+* A classic web server (Apache) with shared memory has to spawn OS processes.
+  Cannot handle more than 10k. An Erlang web server uses isolated processes.
+]
+
+---
+
+class: center, middle
+
+## Scheduling multicores is (NP-)hard
+
+<img src='../img/knapsack-problem.png' width='40%' />
+
+Especially when you're packing great big rocks (OS processes).
+
+???
+
+It's an NP-hard problem.
+
+---
+
+class: center, middle
+
+## But packing sand is easy
+
+<img src='../img/packing-erlang-processes.png' width='60%' />
+
+.copyright[© Patrik Nyblom • Erlang Factory 2010]
+
+---
+
+class: center, middle
+
+## The BEAM VM's architecture
+
+A single OS process, one scheduler per CPU core.
+
+<img src='../img/beam-schedulers.png' width='60%' />
+
+.copyright[© Riza Fahmi]
+
+???
+
+Erlang processes are concurrent. All processes run in parallel (in theory). On a
+multicore machine, the processes are spread over the cores.
+
+2-3 people at Ericsson know how to do it. Let them do it.
+
+Show observer.
+
+---
+
+class: center, middle
+
+<img src='../img/fault-tolerance-word-cloud.jpg' width='60%' />
+
+.copyright[VectorStock®]
+
+---
+
+class: center, middle
+
+<img src='../img/shit-happens.jpg' width='60%' />
+
+???
+
+Software faults, hardware faults.
+
+---
+
+class: center, middle
+
+## The "lasers and cacti" model of fault tolerance
+
+<img src='../img/cacti-fault-tolerance.png' width='35%' />
+
+.copyright[© Learn You Some Erlang for Great Good]
+
+---
+
+class: center, middle
+
+* *"We cannot make fault-tolerant systems on one machine. [...] What happens if the entire computer crashes?"*
+
+.muted.smaller[Joe Armstrong]
+
+---
+
+class: center, middle
+
+* *"You cannot do distributed computing without message passing. It's impossible."*
+
+.muted.smaller[Joe Armstrong]
+
+---
+
+class: center, middle
+
+## Another problem with shared memory
+
+* Single- or multi-core: use shared memory.
+* Distributed computation: use message passing.
+
+You have to use two different programming models.
+
+---
+
+class: center, middle
+
+## Erlang
+
+One programming model to rule them all.
+
+<img src='../img/elixir-distribution.png' width='50%' />
+
+.copyright[© Idioms for Building Distributed Fault-Tolerant Applications with Elixir • José Valim • Curry On Barcelona 2017]
+
+???
+
+Concurrency is a special case of distribution where all processes are on the same machine.
+
+---
+
+class: center, middle
+
+## Where process isolation comes in handy
+
+More computers can increase the **reliability** of your system as long as they are **independent** from each other.
+
+Copying (message pasing) is inefficient but required for fault tolerance.
+
+---
+
+class: center, middle
+
+## Unintended consequences
+
+Fault tolerance implies using isolated components (processes in Erlang).
+
+If the components are isolated they can be run in parallel.
+
+Things that are isolated and can be run in parallel are scalable.
+
+**Free scalability!**
+
+???
+
+[Tandem computers](https://en.wikipedia.org/wiki/Tandem_Computers) also noticed FT scales quite well.
 
 ---
 
@@ -858,55 +1232,290 @@ class: middle
 **A:** *"No it just went faster."*
 ]
 
+???
+
+The goal in Erlang is that a program with a reasonable balance of processes scales automatically on multicores (0.75).
+
+---
+
+class: center, middle
+
+## Okay, but how do we handle crashes?
+
+<img src='../img/failure.jpg' width='60%' />
+
+---
+
+class: center, middle
+
+## We like to write correct programs
+
+But it's virtually impossible to write big correct programs.
+
+<img src='../img/improve-adapt-overcome.png' width='50%' />
+
+Programs must handle errors, evolve and run forever.
+
+---
+
+class: center, middle
+
+## It's alive
+
+Computer systems should be treated as biological systems:
+
+* Failure is an inherent part of its operation.
+* We have to detect it and recover from it.
+
+.muted.smaller[Von Neumann]
+
+---
+
+class: center, middle
+
+## This is how Erlang does it
+
+<img src='../img/off-and-on.jpg' width='60%' />
+
+---
+
+class: center, middle
+
+<img src='../img/let-it-crash.png' width='40%' />
+
+.smaller[Also known as [Fail Fast](https://en.wikipedia.org/wiki/Fail-fast).]
+
+---
+
+class: center, middle
+
+*"[Defensive programming](https://en.wikipedia.org/wiki/Defensive_programming) is a consequence of a bad concurrency model."*
+
+.muted.smaller[Joe Armstrong]
+
+???
+
+Do not be lenient with input: programs should crash when going off spec.
+
+In a sequential program you **lose everything** and affect everyone if it
+crashes.
+
+In Erlang you can have **as many processes as you want**. It's a **different
+failure model**: instead of one very fast delivery car, you have many little
+taxis. You don’t care if a few fail.
+
+---
+
+class: center, middle
+
+## The Bohrbug/Heisenbug hypothesis
+
+*"[...] **Most production software faults are soft.** If the program state is
+reinitialised and the failed operation retried, the operation will usually not
+fail the second time."*
+
+.muted.smaller[Jim Gray]
+
+.copyright[Why Do Computers Stop and What Can Be Done About It? • Tandem Technical Report 1985]
+
+---
+
+class: middle
+
+## Ease of finding bugs in production
+
+What we are interested in are the transient bugs.
+
+<table class='software-fault-types'>
+  <thead>
+    <tr>
+      <td></td>
+      <th>Repeatable</th>
+      <th>Transient</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Core feature</th>
+      <td>Easy to find</td>
+      <td>Hard to find</td>
+    </tr>
+    <tr>
+      <th>Secondary feature</th>
+      <td>Often overlooked</td>
+      <td>Hard to find</td>
+    </tr>
+  </tbody>
+</table>
+
+.copyright[© The Zen of Erlang]
+
+---
+
+class: middle
+
+## Frequency of bugs in production
+
+Transient bugs happen all the time in production.
+
+<table class='software-fault-types'>
+  <thead>
+    <tr>
+      <td></td>
+      <th>Repeatable</th>
+      <th>Transient</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Core feature</th>
+      <td>Should never happen</td>
+      <td>All the time</td>
+    </tr>
+    <tr>
+      <th>Secondary feature</th>
+      <td>Pretty often</td>
+      <td>All the time</td>
+    </tr>
+  </tbody>
+</table>
+
+.copyright[© The Zen of Erlang]
+
+---
+
+class: middle
+
+## Bugs handled by restarts
+
+Restarting helps dealing with transient bugs caused by a very specific state.
+
+<table class='software-fault-types'>
+  <thead>
+    <tr>
+      <td></td>
+      <th>Repeatable</th>
+      <th>Transient</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Core feature</th>
+      <td>No</td>
+      <td class='highlight'>Yes</td>
+    </tr>
+    <tr>
+      <th>Secondary feature</th>
+      <td>No</td>
+      <td class='highlight'>Yes</td>
+    </tr>
+  </tbody>
+</table>
+
+.copyright[© The Zen of Erlang]
+
+---
+
+class: center, middle
+
+## Links
+
+A process can monitor another process (whether local or remote).
+
+If a process crashes, someone else must handle the problem.
+
+<img src='../img/links.png' width='45%' />
+
+.copyright[© Learn You Some Erlang for Great Good]
+
+???
+
+You might have an inconsistent state: let somebody else fix the problem.
+
+If you have a heart attack, you cannot fix the problem yourself.
+
+---
+
+class: center, middle
+
+## Open Telecom Platform (OTP)
+
+The aforementioned "30+ years of experience".
+
+<img src='../img/otp.png' width='30%' />
+
+.copyright[© Learn You Some Erlang for Great Good]
+
+???
+
+OTP is like the Ruby standard library or like Unix for C: a large set of libraries for the Erlang programming language.
+
+---
+
+class: center, middle
+
+## GenServer
+
+Common abstractions.
+
+<img src='../img/otp-common.png' width='50%' />
+
+.copyright[© Learn You Some Erlang for Great Good]
+
+---
+
+class: center, middle
+
+## Supervision trees
+
+<img src='../img/supervision-tree.png' width='40%' />
+
+.copyright[© Learn You Some Erlang for Great Good]
+
+---
+
+class: center, middle
+
+## A supervision strategy for each use case
+
+.supervision-strategies[
+<img src='../img/supervisor-one-for-one.png' width='35%' />
+
+<img src='../img/supervisor-one-for-all.png' width='35%' />
+
+<img src='../img/supervisor-rest-for-one.png' width='35%' />
+]
+
+.copyright[© Learn You Some Erlang for Great Good]
+
+???
+
+[Who Supervises The Supervisor?](https://learnyousomeerlang.com/supervisors)
+
 ---
 
 ## Sources
 
+**Main Inspiration (Videos)**
 
-.half-column[
+.sources[
+* [How we program multicores • Joe Armstrong • SICS Software Week 2016](https://youtu.be/bo5WL5IQAd0)
+* [Idioms for Building Distributed Fault-Tolerant Applications with Elixir • José Valim • Curry On Barcelona 2017](https://youtu.be/MMfYXEH9KsY)
+* [The Soul of Erlang and Elixir • Saša Jurić • GOTO 2019](https://youtu.be/JvBT4XBdoUE)
+* [Faults, Scaling, and Erlang Concurrency • Stanford Seminar 2014](https://youtu.be/YaUPdgtUYko)
+* [The Zen of Erlang • Fred Hebert • Reactive Summit 2016](https://youtu.be/4ZIPijEqrNI)
+]
+
 **Books**
 
 .sources[
 * [Learn You Some Erlang For Great Good](https://learnyousomeerlang.com)
 * [Stuff Goes Bad: Erlang in Anger](https://www.erlang-in-anger.com)
 ]
-]
-
-.half-column[
-**Presentations**
-
-.sources[
-* [The Zen Of Erlang](https://ferd.ca/the-zen-of-erlang.html)
-* [An Introduction to Erlang • Mirko Bonadei](https://www.slideshare.net/MirkoBonadei/an-introduction-to-erlang)
-]
-]
-
-**Articles & Papers**
-
-.sources[
-* [Which Companies are Using Erlang and why? • Erlang Solutions](https://www.erlang-solutions.com/blog/which-companies-are-using-erlang-and-why-mytopdogstatus.html)
-* [Stuff Goes Bad • Fred Herbert • Heroku 2014](https://blog.heroku.com/erlang-in-anger)
-* [Convenience Over Correctness • Steve Vinoski • IEEE](http://steve.vinoski.net/pdf/IEEE-Convenience_Over_Correctness.pdf)
-* [Using Rust to Scale Elixir for 11 Million Concurrent Users • Matt Nowack • Discord](https://blog.discordapp.com/using-rust-to-scale-elixir-for-11-million-concurrent-users-c6f19fc029d3)
-* [Robust compute for RDF queries • Managing fault tolerance in Elixir with supervision trees • Tonny Hammond](https://medium.com/@tonyhammond/robust-compute-for-rdf-queries-eb2ad665ef12)
-* [Understanding Elixir Macros • Jorge Chávez - Hackernoon](https://hackernoon.com/understanding-elixir-macros-3464e141434c)
-* [Understanding Elixir Macros • Saša Jurić](https://www.theerlangelist.com/article/macros_1)
-]
 
 ---
 
-## Sources • Videos
-
-**Main Inspiration**
-
-.sources[
-* [Idioms for Building Distributed Fault-Tolerant Applications with Elixir • José Valim • Curry On Barcelona 2017](https://youtu.be/MMfYXEH9KsY)
-* [The Soul of Erlang and Elixir • Saša Jurić • GOTO 2019](https://youtu.be/JvBT4XBdoUE)
-* [How we program multicores • Joe Armstrong • SICS Software Week 2016](https://youtu.be/bo5WL5IQAd0)
-* [Faults, Scaling, and Erlang Concurrency • Stanford Seminar 2014](https://youtu.be/YaUPdgtUYko)
-]
-
-**Erlang, Concurrent Programming, Fault Tolerance**
+## Sources • Erlang Videos
 
 .sources[
 * [Erlang: The Movie](https://www.youtube.com/watch?v=xrIjfIjssLE)
@@ -921,7 +1530,7 @@ class: middle
 
 ---
 
-## Sources • Videos • Elixir
+## Sources • Elixir Videos
 
 .sources[
 .half-column[
@@ -944,13 +1553,39 @@ class: middle
 * [Phoenix a Web Framework for the New Web • José Valim • GOTO 2016](https://youtu.be/bk3icU8iIto)
 * [Why Elixir Matters: A Genealogy of Functional Programming • Osayame Gaius-Obaseki • ElixirDaze 2018](https://youtu.be/cWAHpvkh8Vs)
 * [Discovering Processes • Saša Jurić • ElixirConfEU 2016](https://youtu.be/y_b6RTes83c)
-* [High availability with Elixir and Erlang • Saša Jurić • Full Stack Fest 2016](https://youtu.be/Ba3aCm3A0o8)
+* [High Availability with Elixir and Erlang • Saša Jurić • Full Stack Fest 2016](https://youtu.be/Ba3aCm3A0o8)
 * [Intro to OTP in Elixir • Jesse J. Anderson • Full Stack Talks 2016](https://youtu.be/CJT8wPnmjTM)
 * [Processes and Supervision in Elixir • Steve Grossi • Indy Elixir 2016](https://youtu.be/eUxang6_WQA)
 * [Docker and OTP Friends or Foes • Daniel Azuma • ElixirConf 2018](https://youtu.be/nLApFANtkHs)
-* [Phoenix a web framework for the new web • Jose Valim • Lambda Days 2016](https://youtu.be/MD3P7Qan3pw)
+* [Phoenix a Web Framework for the New Web • Jose Valim • Lambda Days 2016](https://youtu.be/MD3P7Qan3pw)
 * [Consistent, Distributed Elixir • Chris Keathley • ElixirDaze 2018](https://youtu.be/CmMMpaUD3g8)
+* [What the Fuss About Phoenix • Saša Jurić • WebCamp Zagreb 2016](https://youtu.be/3uJCwcBwfh4)
 ]
+]
+
+---
+
+## Sources • Miscellaneous
+
+**Presentations**
+
+.sources[
+* [The Zen Of Erlang](https://ferd.ca/the-zen-of-erlang.html)
+* [An Introduction to Erlang • Mirko Bonadei](https://www.slideshare.net/MirkoBonadei/an-introduction-to-erlang)
+]
+
+**Articles & Papers**
+
+.sources[
+* [Which Companies are Using Erlang and why? • Erlang Solutions](https://www.erlang-solutions.com/blog/which-companies-are-using-erlang-and-why-mytopdogstatus.html)
+* [Stuff Goes Bad • Fred Herbert • Heroku 2014](https://blog.heroku.com/erlang-in-anger)
+* [Convenience Over Correctness • Steve Vinoski • IEEE](http://steve.vinoski.net/pdf/IEEE-Convenience_Over_Correctness.pdf)
+* [Using Rust to Scale Elixir for 11 Million Concurrent Users • Matt Nowack • Discord](https://blog.discordapp.com/using-rust-to-scale-elixir-for-11-million-concurrent-users-c6f19fc029d3)
+* [Robust compute for RDF queries • Managing fault tolerance in Elixir with supervision trees • Tonny Hammond](https://medium.com/@tonyhammond/robust-compute-for-rdf-queries-eb2ad665ef12)
+* [Understanding Elixir Macros • Jorge Chávez - Hackernoon](https://hackernoon.com/understanding-elixir-macros-3464e141434c)
+* [Understanding Elixir Macros • Saša Jurić](https://www.theerlangelist.com/article/macros_1)
+* [Erlang Concurrency • Sudhakar Rayavaram 2017](https://www.sudhakar.online/programming/2017/01/29/elixir-concurrency.html)
+* [Why Do Computers Stop and What Can Be Done About It? • Jim Gray • Tandem Technical Report 1985](https://www.hpl.hp.com/techreports/tandem/TR-85.7.pdf)
 ]
 
 ---
