@@ -66,9 +66,9 @@ mix test
 ## Introduction
 
 * Explain demo system.
-  * Background daemon in production mode.
-  * Single BEAM VM instance and single OS process.
-  * 1 scheduler to simulate a single-core machine.
+  * Background **daemon** in production mode.
+  * **Single BEAM VM** instance and single OS process.
+  * **Single scheduler** to simulate a single-core machine.
 * Generate synthetic load with 10,000 jobs.
   * Show 10k successes per second.
 * Show user-facing UI.
@@ -83,8 +83,8 @@ mix test
   * Show terminated task process in log.
   * Show 10k successes per second still steady even with a bunch of errors.
 * The connection was made aware of the crash of the calculation process through
-  a message, and can notify the client with no service interruption. This is an
-  example of the "let it crash" philosophy at work.
+  a message, and **can notify** the client **with no service interruption**.
+  This is an example of the "let it crash" philosophy at work.
 
 ## Part 2
 
@@ -95,7 +95,8 @@ mix test
   * Show 10k successes per second still steady despite the fact that it is a
     single-threaded system (one scheduler).
   * Show WebSocket connection still open.
-  * The BEAM VM does very quick context switching with preemptive scheduling.
+  * The BEAM VM does very quick context switching with **preemptive
+    scheduling**.
 * **Trade-off**: the BEAM always favors a fair distribution of time for every
   process in the system. It promotes the progress of the system as a whole at
   the expense of the maximum efficiency of any single activity in the system.
@@ -116,28 +117,37 @@ mix test
   ```bash
   # Run remote console in the context of the running system.
   ./_build/prod/rel/system/bin/system remote_console
+
   # List processes (the system is still responsive).
   > Process.list()
+
   # Show process info (reductions).
   > Process.info(hd(Process.list()))
+
   # Utility function to find the process with the most reductions in the last second.
   > Runtime.top()
+
   # Check again.
   > Runtime.top()
+
   # Get the culprit.
   > pid = hd(Runtime.top()).pid
+
   # Show its information (can still ask the BEAM about it despite it being unresponsive).
   > Process.info(pid)
+
   # Get its stacktrace for debugging.
   > Process.info(pid, :current_stacktrace)
+
   # Trace its activity for 1 second or 50 function invocations (whichever takes place first).
   > Runtime.trace(pid)
+
   # Kill it (like kill -9).
   > Process.kill(pid, :kill)
   ```
 * Show aftermath:
   * Scheduler CPU usage has dropped to expected levels.
-  * The error has been reported to the client
+  * **The error has been reported to the client.**
   * Show 10k successes per second still steady.
   * Show WebSocket connection still open.
 

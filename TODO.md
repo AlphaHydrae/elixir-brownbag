@@ -1,21 +1,14 @@
 # TODO
 
-## Critical
-
-* Test distribution on cluster
-* White list only workers to run game servers
-* Fix FIXMEs & TODOs
-* Create script to quickly perform demo
-
 ## Important
 
-* Write READMEs
-* Generate documentation
-* Generate coverage
-* Doctests
+* Add boardr repo as submodule.
 
 ## Nice-to-have
 
+* Generate documentation
+* Generate coverage
+* Doctests
 * https://elixir-lang.org/getting-started/typespecs-and-behaviours.html
 * Elixir
   * Different operator for concatenation, different operators for binary/bitstrings

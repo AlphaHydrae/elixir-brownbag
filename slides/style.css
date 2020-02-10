@@ -265,3 +265,7 @@ code {
 .remark-notes {
   font-size: 2em;
 }
+
+.remark-slide-container:first-child .remark-slide-number {
+  display: none;
+}

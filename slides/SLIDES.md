@@ -9,7 +9,8 @@ immutable data structures, meta programming with compile-time LISP-style macros,
 open ad-hoc polymorphism with protocols, massive scalability, soft real-time
 systems, high availability, maintainability, hot code swapping, low latency,
 share-nothing message passing concurrency, preemptive scheduling, distribution,
-fault tolerance, remote debugging, parallelized automated tests, doctests
+fault tolerance, remote debugging, parallelized automated tests, documentation
+generator, code formatter, doctests, test coverage
 
 ---
 
@@ -109,9 +110,7 @@ end
 <div class="clear" />
 
 .center[
-  Both are **compiled** and run on the [**BEAM virtual machine**](https://en.wikipedia.org/wiki/BEAM_%28Erlang_virtual_machine%29).
-
-  .muted.smaller[Like these: [Alpaca](https://github.com/alpaca-lang/alpaca), [Gleam](https://gleam.run), [LFE](http://lfe.io)]
+Both are **compiled** and run on the [**BEAM virtual machine**](https://en.wikipedia.org/wiki/BEAM_%28Erlang_virtual_machine%29).
 ]
 
 ---
@@ -259,7 +258,7 @@ iex> hello.("World")  # "Hello World"
 
 ---
 
-class: center, middle, hidden-header
+class: center, middle, inverse, hidden-header
 
 ## Functional programming
 
@@ -269,6 +268,7 @@ class: center, middle, hidden-header
 
 * *"FP emphasizes the evaluation of expressions rather than the execution of commands"*
 * Pragmatic functional language, not religious about it like Haskell.
+* 3 examples of what FP means in the context of Elixir.
 
 ---
 
@@ -347,8 +347,11 @@ iex> [1] = [1]
 [1]
 ```
 
+`=` is actually not an assignment operator in Elixir. It's called the **match operator**.
+
 ```elixir
-iex> [a, b, [c]] = [1, 2, [3]]
+iex> b = 2
+iex> [1, ^b, [c]] = [1, 2, [3]]
 [1, 2, [3]]
 
 iex> c
@@ -474,6 +477,10 @@ iex> Macro.to_string(ast)
 "1 + 2"
 ```
 
+???
+
+The Elixir AST is represented as a tuple of Elixir terms.
+
 ---
 
 ### What do I care?
@@ -547,6 +554,12 @@ if(condition, do: do_this(), else: do_that())
 
 So are these: `def`, `defmodule`, `|>`.
 
+???
+
+Macros are expanded at compilation time and must be explicitly imported.
+
+You cannot affect an application's code from within your library's code.
+
 ---
 
 ### Domain Specific Languages Through Macros
@@ -596,6 +609,34 @@ Debugging Tools ([Observer](https://elixir-lang.org/getting-started/debugging.ht
 
 ---
 
+### Doctests
+
+```elixir
+defmodule HelloModule do
+  @doc ~S"""
+  This method salutes you.
+
+  ## Examples
+
+      iex> HelloModule.hello("Gladiator")
+      "Hello Gladiator"
+
+  """
+  def hello(name) do
+    "Hello #{name}"
+  end
+end
+```
+
+```elixir
+defmodule HelloModuleTest do
+  use ExUnit.Case, async: true
+  doctest MyModule
+end
+```
+
+---
+
 ## Fully compatible with Erlang
 
 Modules are identified by atoms in both Erlang and Elixir:
@@ -640,6 +681,10 @@ class: center, middle, inverse
 
 # The Erlang Concurrency Model
 
+???
+
+Everything that's about to be presented is true of Elixir as well.
+
 ---
 
 class: center, middle
@@ -660,7 +705,7 @@ Massively parallel problems are extremely common.
 
 The way Erlang is used at least proves the model works.
 
-Joe Armstrong's vision.
+**Joe Armstrong's vision.**
 
 ---
 
@@ -670,6 +715,10 @@ class: center, middle
 
 .muted.smaller[Anonymous programmer]
 
+???
+
+One of the aforementioned problems of the last 15 years.
+
 ---
 
 class: center, middle, hidden-header
@@ -677,6 +726,11 @@ class: center, middle, hidden-header
 ## Programming for multicores
 
 <img src='../img/multi-core.png' width='85%' />
+
+???
+
+You have to write parallel programs to take advantage of the increase in the
+number of CPU cores.
 
 ---
 
@@ -710,6 +764,11 @@ Miranda, Haskell, Go, Simula
 Erlang, Elixir, Pony
 ]
 
+???
+
+A few of the languages on the left also have message passing like Go or Scala,
+but they still do shared memory concurrency.
+
 ---
 
 class: center
@@ -742,9 +801,14 @@ class: center, middle
 
 ???
 
+Back to the past.
+
 Ericsson had large computer networks before the internet (20-30 years).
 
-Erlang was designed by Joe Armstrong, Robert Virding & Mike Williams for big worldwide infrastructure.
+Erlang was designed for big worldwide infrastructure by Joe Armstrong, Robert
+Virding & Mike Williams in the Computer Science Lab at Ericsson.
+
+A language born in the industry.
 
 ---
 
@@ -763,6 +827,12 @@ class: center, middle
 <img src='../img/switch-diagram.jpg' width='60%' />
 
 .copyright[© Idioms for Building Distributed Fault-Tolerant Applications with Elixir • José Valim • Curry On Barcelona 2017]
+
+???
+
+* Must support many concurrent users.
+* Must be distributed.
+* Must not fail.
 
 ---
 
@@ -813,7 +883,8 @@ class: center, middle
 
 ???
 
-True parallelism impossible on single core (hyperthreading, superscalar processor).
+True parallelism impossible on single core (pipelining, hyperthreading,
+superscalar processor).
 
 ---
 
@@ -887,9 +958,9 @@ class: center, middle
 
 ???
 
-Erlang was designed caring about correctness, not efficiency.
+Erlang was designed caring about correctness, not efficiency or performance.
 
-Efficiency comes from parallelism
+Efficiency comes from parallelism.
 
 ---
 
@@ -912,9 +983,9 @@ Purely sequential, easy to understand.
 Very lightweight compared to OS process:
 
 * Smallest OS process: ~64kB.
-* Erlang process [309 words](http://erlang.org/doc/efficiency_guide/processes.html), including 233 for the heap (~2.4kB for 64 bit architecture).
-
-
+* Erlang process [309
+  words](http://erlang.org/doc/efficiency_guide/processes.html), including 233
+  for the heap (~2.4kB for 64 bit architecture).
 
 Beam VM can run a maximum of about 130 million processes (source?).
 
@@ -932,7 +1003,7 @@ class: center, middle
 
 ## 3 concurrency primitives
 
-Spawn, send, receive.
+Provided by the BEAM (not the OS): spawn, send, receive.
 
 .half-column[
 ```erlang
@@ -1026,9 +1097,14 @@ No pointer/reference: everything is copied and immutable.
 
 ???
 
-Isolated processes communicate through message passing.
+Isolated processes communicate through asynchronous message passing.
 
-Not religious FP immutability: ETS tables don't change the entire universe every time you change something in it.
+Trade-off: isolation has a cost (copying), but also benefits like no
+stop-the-world garbage collection. **More on that later.**
+
+Not religious FP immutability: ETS tables don't change the entire universe every
+time you change something in it. Otherwise it would be hard to implement a
+database with Erlang (e.g. CouchDB, Riak).
 
 ---
 
@@ -1059,9 +1135,9 @@ class: center, middle
 
 ## Actor model
 
-<img src='../img/actor-model.png' width='50%' />
-
 Code is based on **observation**.
+
+<img src='../img/actor-model.png' width='50%' />
 
 .copyright[© How we program multicores • Joe Armstrong • SICS Software Week 2016]
 
@@ -1070,12 +1146,13 @@ Code is based on **observation**.
 [History of the Actor Model](https://en.wikipedia.org/wiki/History_of_the_Actor_model)
 
 .smaller[
-* Single site where things happen: each process is a single place consuming a
-  single stream of events.
-* Process granularity is defined by observing the world (e.g. phone
+* **Single site** where things happen: each process is a single place
+  synchronously consuming a single stream of events.
+* **Process granularity** is defined by observing the world (e.g. phone
   conversation).
-* A million users: a million processes. The concurrency of the system is
-  reflected in the architecture.
+* A million users: a million processes. **The concurrency of the system is
+  reflected in the architecture**.
+* Easily 1000+ Erlang processes in an application.
 * A classic web server (Apache) with shared memory has to spawn OS processes.
   Cannot handle more than 10k. An Erlang web server uses isolated processes.
 ]
@@ -1084,7 +1161,7 @@ Code is based on **observation**.
 
 class: center, middle
 
-## Scheduling multicores is (NP-)hard
+## Scheduling processes on multicores is (NP-)hard
 
 <img src='../img/knapsack-problem.png' width='40%' />
 
@@ -1103,6 +1180,11 @@ class: center, middle
 <img src='../img/packing-erlang-processes.png' width='60%' />
 
 .copyright[© Patrik Nyblom • Erlang Factory 2010]
+
+???
+
+3 registers moved when context-switching between Erlang processes, ~700 words
+moved for OS processes (source?).
 
 ---
 
@@ -1151,6 +1233,8 @@ class: center, middle
 
 Software faults, hardware faults.
 
+We need to make fault tolerant programs that handle both.
+
 ---
 
 class: center, middle
@@ -1161,6 +1245,10 @@ class: center, middle
 
 .copyright[© Learn You Some Erlang for Great Good]
 
+???
+
+How do we make fault tolerant programs in the presence of hardware failure?
+
 ---
 
 class: center, middle
@@ -1169,6 +1257,11 @@ class: center, middle
 
 .muted.smaller[Joe Armstrong]
 
+???
+
+You need to distribute your program across several computers to make it fault
+tolerant.
+
 ---
 
 class: center, middle
@@ -1176,6 +1269,11 @@ class: center, middle
 * *"You cannot do distributed computing without message passing. It's impossible."*
 
 .muted.smaller[Joe Armstrong]
+
+???
+
+Physically separate programs need to communicate through some kind of message
+passing, e.g. HTTP.
 
 ---
 
@@ -1220,7 +1318,7 @@ class: center, middle
 
 ## Unintended consequences
 
-Fault tolerance implies using isolated components (processes in Erlang).
+Fault tolerance implies using isolated components (Erlang processes).
 
 If the components are isolated they can be run in parallel.
 
@@ -1276,9 +1374,9 @@ Programs must handle errors, evolve and run forever.
 
 class: center, middle
 
-## It's alive
+## It's alive!
 
-Computer systems should be treated as biological systems:
+A computer system should be treated as a biological system:
 
 * Failure is an inherent part of its operation.
 * We have to detect it and recover from it.
@@ -1340,7 +1438,7 @@ class: middle
 
 ## Ease of finding bugs in production
 
-What we are interested in are the transient bugs.
+Repeatable bugs should be handled by testing (manual or automated).
 
 <table class='software-fault-types'>
   <thead>
@@ -1484,9 +1582,16 @@ class: center, middle
 
 ## Supervision trees
 
-<img src='../img/supervision-tree.png' width='40%' />
+Just let it crash already!
+
+<img src='../img/supervision-tree.png' width='35%' />
 
 .copyright[© Learn You Some Erlang for Great Good]
+
+???
+
+Generally workers do the work while supervisors only handle supervision,
+although there can be exceptions (Phoenix channel TCP acceptor).
 
 ---
 
@@ -1506,7 +1611,18 @@ class: center, middle
 
 ???
 
-[Who Supervises The Supervisor?](https://learnyousomeerlang.com/supervisors)
+[Who Supervises The Supervisors?](https://learnyousomeerlang.com/supervisors)
+
+Supervisors can be configured to only let a supervised process crashed a maximum
+number of times, after which it will crash itself.
+
+---
+
+class: center, middle, inverse
+
+--
+
+# DEMO TIME
 
 ---
 
