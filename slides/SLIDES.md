@@ -1718,6 +1718,8 @@ class: center, middle, inverse
 * [Understanding Elixir Macros • Saša Jurić](https://www.theerlangelist.com/article/macros_1)
 * [Erlang Concurrency • Sudhakar Rayavaram 2017](https://www.sudhakar.online/programming/2017/01/29/elixir-concurrency.html)
 * [Why Do Computers Stop and What Can Be Done About It? • Jim Gray • Tandem Technical Report 1985](https://www.hpl.hp.com/techreports/tandem/TR-85.7.pdf)
+* [Comparing Elixir and Go](https://blog.codeship.com/comparing-elixir-go/)
+* [The Road to 2 Million Websocket Connections in Phoenix](https://www.phoenixframework.org/blog/the-road-to-2-million-websocket-connections)
 ]
 
 ---
