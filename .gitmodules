@@ -1,3 +1,6 @@
 [submodule "elixir-demo-system"]
 	path = elixir-demo-system
 	url = https://github.com/sasa1977/demo_system.git
+[submodule "boardr"]
+	path = boardr
+	url = https://github.com/AlphaHydrae/boardr.git
