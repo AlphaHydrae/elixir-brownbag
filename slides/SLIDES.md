@@ -1658,6 +1658,7 @@ class: center, middle, inverse
 * [Why We Chose Erlang over Java, Scala, Go, C • Colin Hemmings • QCon London 2017](https://youtu.be/OcExABAAsXs)
 * [Hitchhiker's Tour of the BEAM • Robert Virding • Erlang User Conference 2014](https://youtu.be/_Pwlvy3zz9M)
 * [Building A Highly Scalable Service that Survived A Super Bowl • Keith Elder • Code BEAM SF 19](https://youtu.be/lXiiiLhwBI4)
+* [That's 'Billion' with a 'B': Scaling to the Next Level at WhatsApp • Rick Reed • Erlang Factory 2014](https://youtu.be/c12cYAUTXXs)
 ]
 
 ---
@@ -1732,7 +1733,7 @@ class: center, inverse, middle
 
 class: center, middle, inverse
 
-## Backup
+## Backup
 
 ---
 
