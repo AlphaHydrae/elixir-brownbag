@@ -1659,6 +1659,10 @@ class: center, middle, inverse
 * [Hitchhiker's Tour of the BEAM • Robert Virding • Erlang User Conference 2014](https://youtu.be/_Pwlvy3zz9M)
 * [Building A Highly Scalable Service that Survived A Super Bowl • Keith Elder • Code BEAM SF 19](https://youtu.be/lXiiiLhwBI4)
 * [That's 'Billion' with a 'B': Scaling to the Next Level at WhatsApp • Rick Reed • Erlang Factory 2014](https://youtu.be/c12cYAUTXXs)
+* [How Cisco is using Erlang for intent-based networking • Johan Bevemyr • Code Beam STO](https://youtu.be/077-XJv6PLQ)
+* [Computing: The first 100 years • Joe Armstrong • Full Stack Fest 2016](https://youtu.be/itKFrXghGuA)
+* [Keynote: The Forgotten Ideas in Computer Science • Joe Armstrong • Code BEAM SF 2018](https://youtu.be/-I_jE0l7sYQ)
+* ["The Mess We're In" • Joe Armstrong • Strange Loop 2014](https://youtu.be/lKXe3HUG2l4)
 ]
 
 ---
@@ -1693,6 +1697,7 @@ class: center, middle, inverse
 * [Phoenix a Web Framework for the New Web • Jose Valim • Lambda Days 2016](https://youtu.be/MD3P7Qan3pw)
 * [Consistent, Distributed Elixir • Chris Keathley • ElixirDaze 2018](https://youtu.be/CmMMpaUD3g8)
 * [What the Fuss About Phoenix • Saša Jurić • WebCamp Zagreb 2016](https://youtu.be/3uJCwcBwfh4)
+* [The Climb: Experiencing the Rise of Elixir from the Inside • Bruce Tate & Dave Thomas • Erlang Factory SF 2016](https://youtu.be/fklep3sUSWo)
 ]
 ]
 
